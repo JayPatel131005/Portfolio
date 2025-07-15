@@ -964,13 +964,13 @@ export default function DynamicPortfolio() {
       </div>
 
       {/* Mouse Follower */}
-      <div 
+      {/* <div 
         className="mouse-follower"
         style={{
           left: mousePosition.x,
           top: mousePosition.y,
         }}
-      />
+      /> */}
 
       {/* Navigation */}
       <nav className={`nav ${isLoaded ? 'loaded' : ''}`}>
