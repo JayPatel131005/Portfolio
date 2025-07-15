@@ -24,7 +24,7 @@ const styles = `
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 0;
     overflow: hidden;
     background: linear-gradient(to bottom, #000428, #000000); /* Dark gradient for space */
   }
@@ -778,7 +778,7 @@ export default function DynamicPortfolio() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+ // const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [scrollY, setScrollY] = useState(0)
   const typewriterTextRef = useRef(null)
 
@@ -794,26 +794,26 @@ export default function DynamicPortfolio() {
   }, [])
 
   // Mouse trail and position
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+  // useEffect(() => {
+  //   const handleMouseMove = (e) => {
+  //     setMousePosition({ x: e.clientX, y: e.clientY });
       
-      // Optional: Create trail elements
-      const trailElement = document.createElement('div');
-      trailElement.className = 'trail';
-      trailElement.style.left = `${e.clientX}px`;
-      trailElement.style.top = `${e.clientY}px`;
-      document.body.appendChild(trailElement);
+  //     // Optional: Create trail elements
+  //     const trailElement = document.createElement('div');
+  //     trailElement.className = 'trail';
+  //     trailElement.style.left = `${e.clientX}px`;
+  //     trailElement.style.top = `${e.clientY}px`;
+  //     document.body.appendChild(trailElement);
       
-      setTimeout(() => {
-        if (document.body.contains(trailElement)) { // Check if element still exists before trying to remove
-          document.body.removeChild(trailElement);
-        }
-      }, 300); // Matches the new animation duration
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  //     setTimeout(() => {
+  //       if (document.body.contains(trailElement)) { // Check if element still exists before trying to remove
+  //         document.body.removeChild(trailElement);
+  //       }
+  //     }, 300); // Matches the new animation duration
+  //   };
+  //   window.addEventListener("mousemove", handleMouseMove);
+  //   return () => window.removeEventListener("mousemove", handleMouseMove);
+  // }, []);
 
   // Generate stars for universe background
   useEffect(() => {
