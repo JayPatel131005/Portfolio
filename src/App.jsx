@@ -52,39 +52,39 @@ const styles = `
   }
 
   /* Enhanced Mouse Follower */
-  .mouse-follower {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    background: rgba(102, 126, 234, 0.6); /* Core color */
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    mix-blend-mode: none; /* Creates a cool interaction with content */
-    transform: translate(-50%, -50%); /* Centers the cursor on the mouse */
-    transition: transform 0.1s ease-out, box-shadow 0.2s ease-out; /* Smooth movement and glow transition */
-    box-shadow: 0 0 15px 5px rgba(102, 126, 234, 0.8), /* Inner glow */
-                0 0 20px 10px rgba(118, 75, 162, 0.5); /* Outer, softer glow */
-  }
+  // .mouse-follower {
+  //   position: fixed;
+  //   width: 40px;
+  //   height: 40px;
+  //   background: rgba(102, 126, 234, 0.6); /* Core color */
+  //   border-radius: 50%;
+  //   pointer-events: none;
+  //   z-index: 0;
+  //   mix-blend-mode: none; /* Creates a cool interaction with content */
+  //   transform: translate(-50%, -50%); /* Centers the cursor on the mouse */
+  //   transition: transform 0.1s ease-out, box-shadow 0.2s ease-out; /* Smooth movement and glow transition */
+  //   box-shadow: 0 0 15px 5px rgba(102, 126, 234, 0.8), /* Inner glow */
+  //               0 0 20px 10px rgba(118, 75, 162, 0.5); /* Outer, softer glow */
+  // }
 
-  /* Optional: Trail effect (requires JavaScript update) */
-  .trail {
-    position: fixed;
-    width: 15px; /* Slightly larger trail */
-    height: 15px;
-    background: rgba(255, 255, 255, 0.15); /* Softer white for trail */
-    border-radius: 50%;
-    pointer-events: none;
-    mix-blend-mode: exclusion;
-    transform: translate(-50%, -50%);
-    animation: fadeAndShrink 0.3s forwards ease-out; /* Smoother animation */
-    opacity: 0.8;
-  }
+  // /* Optional: Trail effect (requires JavaScript update) */
+  // .trail {
+  //   position: fixed;
+  //   width: 15px; /* Slightly larger trail */
+  //   height: 15px;
+  //   background: rgba(255, 255, 255, 0.15); /* Softer white for trail */
+  //   border-radius: 50%;
+  //   pointer-events: none;
+  //   mix-blend-mode: exclusion;
+  //   transform: translate(-50%, -50%);
+  //   animation: fadeAndShrink 0.3s forwards ease-out; /* Smoother animation */
+  //   opacity: 0.8;
+  // }
 
-  @keyframes fadeAndShrink {
-    0% { opacity: 1; transform: scale(1) translate(-50%, -50%); }
-    100% { opacity: 0; transform: scale(0.6) translate(-50%, -50%); } /* Shrinks slightly */
-  }
+  // @keyframes fadeAndShrink {
+  //   0% { opacity: 1; transform: scale(1) translate(-50%, -50%); }
+  //   100% { opacity: 0; transform: scale(0.6) translate(-50%, -50%); } /* Shrinks slightly */
+  // }
 
   /* Navigation */
   .nav {
