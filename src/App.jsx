@@ -229,7 +229,7 @@ const styles = `
     margin-bottom: 1rem;
     background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: white;
     background-clip: text;
     background-size: 300%;
     animation: gradientText 3s ease infinite;
