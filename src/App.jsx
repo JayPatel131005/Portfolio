@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, ArrowDown, Menu, X, Star, Zap, Heart } from "lucide-react"
+import { Github, Linkedin, Mail, ExternalLink, Code, Smartphone, ArrowDown, Menu, X, Star, Zap, Heart } from "lucide-react"
 
 const styles = `
   * {
@@ -14,8 +14,39 @@ const styles = `
     color: #ffffff;
     overflow-x: hidden;
     line-height: 1.6;
-    cursor: none; /* Hide default cursor */
+    cursor: default; /* Use default system cursor */
   }
+  
+  /* --- NEW --- Loading Overlay Animation */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.75s ease-out;
+    opacity: 1;
+  }
+
+  .loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .loader {
+    border: 5px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #667eea;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  /* End of New Loading Styles */
 
   /* Universe Background */
   .background-container {
@@ -26,7 +57,7 @@ const styles = `
     height: 100%;
     z-index: -1;
     overflow: hidden;
-    background: linear-gradient(to bottom, #000428, #000000); /* Dark gradient for space */
+    background: linear-gradient(to bottom, #000428, #000000);
   }
 
   .stars {
@@ -49,41 +80,6 @@ const styles = `
     50% {
       opacity: 1;
     }
-  }
-
-  /* Enhanced Mouse Follower */
-  .mouse-follower {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    background: rgba(102, 126, 234, 0.6); /* Core color */
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    mix-blend-mode: none; /* Creates a cool interaction with content */
-    transform: translate(-50%, -50%); /* Centers the cursor on the mouse */
-    transition: transform 0.1s ease-out, box-shadow 0.2s ease-out; /* Smooth movement and glow transition */
-    box-shadow: 0 0 15px 5px rgba(102, 126, 234, 0.8), /* Inner glow */
-                0 0 20px 10px rgba(118, 75, 162, 0.5); /* Outer, softer glow */
-  }
-
-  /* Optional: Trail effect (requires JavaScript update) */
-  .trail {
-    position: fixed;
-    width: 15px; /* Slightly larger trail */
-    height: 15px;
-    background: rgba(255, 255, 255, 0.15); /* Softer white for trail */
-    border-radius: 50%;
-    pointer-events: none;
-    mix-blend-mode: exclusion;
-    transform: translate(-50%, -50%);
-    animation: fadeAndShrink 0.3s forwards ease-out; /* Smoother animation */
-    opacity: 0.8;
-  }
-
-  @keyframes fadeAndShrink {
-    0% { opacity: 1; transform: scale(1) translate(-50%, -50%); }
-    100% { opacity: 0; transform: scale(0.6) translate(-50%, -50%); } /* Shrinks slightly */
   }
 
   /* Navigation */
@@ -453,28 +449,28 @@ const styles = `
 
   .avatar {
     position: absolute;
-    inset: 60px; /* Adjust this value if your image needs more or less space from the rings */
+    inset: 60px;
     border-radius: 50%;
-    overflow: hidden; /* Ensures the image stays within the circle */
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: pulse 2s infinite; /* Keep the pulse animation for the container */
+    animation: pulse 2s infinite;
   }
 
   .avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the circle without distortion */
-    border-radius: 50%; /* Ensures the image itself is also circular */
+    object-fit: cover;
+    border-radius: 50%;
   }
 
   /* Skills Section */
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjusted for more columns, smaller items */
-    gap: 1.5rem; /* Reduced gap */
-    justify-content: center; /* Center items */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    justify-content: center;
   }
 
   .skill-item {
@@ -482,14 +478,14 @@ const styles = `
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 15px;
-    padding: 1rem; /* Reduced padding */
+    padding: 1rem;
     transition: all 0.3s ease;
-    text-align: center; /* Center text and icon */
-    display: flex; /* Use flex to align content */
-    flex-direction: column; /* Stack content vertically */
-    align-items: center; /* Center content horizontally */
-    justify-content: center; /* Center content vertically */
-    min-height: 120px; /* Minimum height for consistency */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
   }
 
   .skill-item:hover {
@@ -500,7 +496,7 @@ const styles = `
   .skill-name {
     font-weight: 600;
     color: white;
-    margin-top: 0.5rem; /* Space between icon and name */
+    margin-top: 0.5rem;
   }
 
   /* Projects Section */
@@ -684,7 +680,7 @@ const styles = `
     }
 
     .skills-grid {
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Further adjustment for smaller screens */
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
 
     .skill-item {
@@ -738,13 +734,12 @@ const styles = `
     scroll-behavior: smooth;
   }
 
-  /* Loading animation */
   @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
   }
 
-  /* --- MODIFIED/NEW --- Utility classes for animations */
+  /* Utility classes for animations */
   .fade-in, .slide-in-left, .slide-in-right {
     opacity: 0;
     transition: opacity 0.6s ease-out, transform 0.8s ease-out;
@@ -769,11 +764,11 @@ const styles = `
   
   /* Inline Text Highlight Animation */
   .highlight-text {
-    color: #f093fb; /* A vibrant color for the highlight */
-    font-weight: bold; /* Make it bold for emphasis */
-    text-shadow: 0 0 8px rgba(240, 147, 251, 0.7); /* Subtle glow */
-    transition: all 0.3s ease-in-out; /* Smooth transition for any hover effects if added */
-    animation: textGlowPulse 2s infinite alternate; /* A subtle pulsing glow */
+    color: #f093fb;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(240, 147, 251, 0.7);
+    transition: all 0.3s ease-in-out;
+    animation: textGlowPulse 2s infinite alternate;
   }
 
   @keyframes textGlowPulse {
@@ -787,63 +782,54 @@ const styles = `
 `
 
 export default function DynamicPortfolio() {
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isPageLoaded, setIsPageLoaded] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [scrollY, setScrollY] = useState(0)
   const typewriterTextRef = useRef(null)
+  const [isLoading, setIsLoading] = useState(true); // --- NEW --- State for loading screen
 
   const roles = ["A Web Developer", "A Problem Solver", "A Full-Stack Developer","A Hardworking young boy who chasing his dream"];
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(150); // Initial typing speed
+  const [typingSpeed, setTypingSpeed] = useState(150);
 
+  // --- NEW --- Effect for loading screen and initial page load
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 100)
-    return () => clearTimeout(timer)
+    // Show loader
+    const loadingTimer = setTimeout(() => {
+        setIsLoading(false);
+    }, 2000); // Adjust duration as needed (e.g., 2000ms = 2 seconds)
+
+    // Trigger hero section animation after loader is gone
+    const pageLoadTimer = setTimeout(() => {
+        setIsPageLoaded(true)
+    }, 2100); // This should be slightly after the loader hides
+    
+    return () => {
+        clearTimeout(loadingTimer);
+        clearTimeout(pageLoadTimer);
+    }
   }, [])
-
-  // Mouse trail and position
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      
-      // Optional: Create trail elements
-      const trailElement = document.createElement('div');
-      trailElement.className = 'trail';
-      trailElement.style.left = `${e.clientX}px`;
-      trailElement.style.top = `${e.clientY}px`;
-      document.body.appendChild(trailElement);
-      
-      setTimeout(() => {
-        if (document.body.contains(trailElement)) { // Check if element still exists before trying to remove
-          document.body.removeChild(trailElement);
-        }
-      }, 300); // Matches the new animation duration
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
+  
   // Generate stars for universe background
   useEffect(() => {
     const generateStars = () => {
       const backgroundContainer = document.querySelector('.background-container');
-      if (!backgroundContainer) return; // Ensure container exists
+      if (!backgroundContainer) return;
 
       const starsContainer = document.createElement('div');
       starsContainer.className = 'stars';
 
-      for (let i = 0; i < 200; i++) { // Adjust number of stars as needed
+      for (let i = 0; i < 200; i++) {
         const star = document.createElement('div');
         star.className = 'star';
-        star.style.width = `${Math.random() * 2 + 1}px`; // Random size
+        star.style.width = `${Math.random() * 2 + 1}px`;
         star.style.height = `${Math.random() * 2 + 1}px`;
         star.style.top = `${Math.random() * 100}%`;
         star.style.left = `${Math.random() * 100}%`;
-        star.style.animationDelay = `${Math.random() * 2}s`; // Random delay
+        star.style.animationDelay = `${Math.random() * 2}s`;
         starsContainer.appendChild(star);
       }
       backgroundContainer.appendChild(starsContainer);
@@ -854,10 +840,10 @@ export default function DynamicPortfolio() {
     return () => {
       const starsContainer = document.querySelector('.stars');
       if (starsContainer) {
-        starsContainer.remove(); // Clean up stars on unmount
+        starsContainer.remove();
       }
     };
-  }, []); // Run only once on mount
+  }, []);
 
 
   // Scroll handling and section visibility
@@ -878,7 +864,6 @@ export default function DynamicPortfolio() {
         }
       }
 
-      // --- MODIFIED --- Fade-in/slide-in effect for elements
       const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
       animatedElements.forEach(el => {
         const elementTop = el.getBoundingClientRect().top;
@@ -892,7 +877,6 @@ export default function DynamicPortfolio() {
     }
 
     window.addEventListener("scroll", handleScroll)
-    // Initial check on load
     handleScroll(); 
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -903,19 +887,19 @@ export default function DynamicPortfolio() {
     const currentRole = roles[currentRoleIndex];
 
     if (isDeleting) {
-      setTypingSpeed(100); // Faster deleting speed
+      setTypingSpeed(100);
       typeEffect = setTimeout(() => {
         setCurrentText(currentRole.substring(0, currentText.length - 1));
       }, typingSpeed);
     } else {
-      setTypingSpeed(200); // Normal typing speed
+      setTypingSpeed(200);
       typeEffect = setTimeout(() => {
         setCurrentText(currentRole.substring(0, currentText.length + 1));
       }, typingSpeed);
     }
 
     if (!isDeleting && currentText === currentRole) {
-      setTimeout(() => setIsDeleting(true), 2000); // Pause at end of typing
+      setTimeout(() => setIsDeleting(true), 2000);
     } else if (isDeleting && currentText === '') {
       setIsDeleting(false);
       setCurrentRoleIndex((prevIndex) => (prevIndex + 1) % roles.length);
@@ -970,22 +954,18 @@ export default function DynamicPortfolio() {
     <div>
       <style>{styles}</style>
       
+      {/* --- NEW --- Loading overlay */}
+      <div className={`loading-overlay ${!isLoading ? 'hidden' : ''}`}>
+        <div className="loader"></div>
+      </div>
+      
       {/* Background */}
       <div className="background-container">
         {/* Stars will be generated here by JavaScript */}
       </div>
 
-      {/* Mouse Follower */}
-      <div 
-        className="mouse-follower"
-        style={{
-          left: mousePosition.x,
-          top: mousePosition.y,
-        }}
-      />
-
       {/* Navigation */}
-      <nav className={`nav ${isLoaded ? 'loaded' : ''}`}>
+      <nav className={`nav ${isPageLoaded ? 'loaded' : ''}`}>
         <div className="nav-content">
           <div className="nav-container">
             <div className="logo">Jay Patel-Portfolio</div>
@@ -1039,7 +1019,7 @@ export default function DynamicPortfolio() {
 
       {/* Hero Section */}
       <section id="home" className="hero">
-        <div className={`hero-content ${isLoaded ? 'loaded' : ''}`}>
+        <div className={`hero-content ${isPageLoaded ? 'loaded' : ''}`}>
           <h1 className="hero-title">
             {"Hi, I'm Jay Patel.".split("").map((char, index) => (
               <span key={index} className="hero-letter" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -1079,9 +1059,7 @@ export default function DynamicPortfolio() {
           <h2>About Me</h2>
           <div className="section-divider"></div>
         </div>
-        {/* --- MODIFIED --- Removed fade-in from grid parent */}
         <div className="about-grid">
-          {/* --- MODIFIED --- Added slide-in-left to text container */}
           <div className="about-info slide-in-left">
             <p className="about-text">
               Hello! I'm <span className="highlight-text">JAY PATEL</span>, a dedicated and enthusiastic <span className="highlight-text">WEB DEVELOPER</span> with a passion for creating dynamic and intuitive user experiences.
@@ -1093,7 +1071,7 @@ export default function DynamicPortfolio() {
             </p>
             <p className="about-text">
               I thrive on learning new technologies and solving complex problems, always eager to <span className="highlight-text">quickly understand and adapt</span> to new challenges.
-              When I'm not coding, you can find me exploring new design 9trends, contributing to open-source projects, or diving into a good book.
+              When I'm not coding, you can find me exploring new design trends, contributing to open-source projects, or diving into a good book.
               I'm always eager to collaborate on exciting projects and contribute to innovative solutions.
             </p>
             <div className="badges">
@@ -1103,7 +1081,6 @@ export default function DynamicPortfolio() {
               <span className="badge"><Star size={16} /> Problem Solver</span>
             </div>
           </div>
-          {/* --- MODIFIED --- Added slide-in-right to avatar container */}
           <div className="avatar-container slide-in-right">
             <div className="avatar-ring"></div>
             <div className="avatar-ring"></div>
@@ -1192,4 +1169,4 @@ export default function DynamicPortfolio() {
       </footer>
     </div>
   )
-}
+} 
