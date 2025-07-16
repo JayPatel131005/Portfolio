@@ -39,12 +39,12 @@ const styles = `
     position: absolute;
     background: white;
     border-radius: 50%;
-    animation: twinkle 2s infinite;
+    animation: twinkle 1s infinite;
   }
 
   @keyframes twinkle {
     0%, 100% {
-      opacity: 0.5;
+      opacity: 0;
     }
     50% {
       opacity: 1;
@@ -1164,7 +1164,7 @@ export default function DynamicPortfolio() {
             I'm always open to new opportunities, collaborations, and interesting conversations.
             Whether you have a project in mind, a question, or just want to say hello, feel free to reach out!
           </p>
-          <a href="mailto:Jaypatelin2005@gmail.com" className="contact-button">
+          <a href="mailto:jaypatelin2005@gmail.com" className="contact-button">
             Say Hello <Mail size={20} style={{ marginLeft: '8px' }} />
           </a>
         </div>
