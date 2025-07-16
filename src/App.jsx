@@ -24,7 +24,7 @@ const styles = `
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
+    z-index: -1;
     overflow: hidden;
     background: linear-gradient(to bottom, #000428, #000000); /* Dark gradient for space */
   }
@@ -39,12 +39,12 @@ const styles = `
     position: absolute;
     background: white;
     border-radius: 50%;
-    animation: twinkle 1s infinite;
+    animation: twinkle 2s infinite;
   }
 
   @keyframes twinkle {
     0%, 100% {
-      opacity: 0;
+      opacity: 0.5;
     }
     50% {
       opacity: 1;
@@ -52,39 +52,39 @@ const styles = `
   }
 
   /* Enhanced Mouse Follower */
-  // .mouse-follower {
-  //   position: fixed;
-  //   width: 40px;
-  //   height: 40px;
-  //   background: rgba(102, 126, 234, 0.6); /* Core color */
-  //   border-radius: 50%;
-  //   pointer-events: none;
-  //   z-index: 0;
-  //   mix-blend-mode: none; /* Creates a cool interaction with content */
-  //   transform: translate(-50%, -50%); /* Centers the cursor on the mouse */
-  //   transition: transform 0.1s ease-out, box-shadow 0.2s ease-out; /* Smooth movement and glow transition */
-  //   box-shadow: 0 0 15px 5px rgba(102, 126, 234, 0.8), /* Inner glow */
-  //               0 0 20px 10px rgba(118, 75, 162, 0.5); /* Outer, softer glow */
-  // }
+  .mouse-follower {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    background: rgba(102, 126, 234, 0.6); /* Core color */
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: none; /* Creates a cool interaction with content */
+    transform: translate(-50%, -50%); /* Centers the cursor on the mouse */
+    transition: transform 0.1s ease-out, box-shadow 0.2s ease-out; /* Smooth movement and glow transition */
+    box-shadow: 0 0 15px 5px rgba(102, 126, 234, 0.8), /* Inner glow */
+                0 0 20px 10px rgba(118, 75, 162, 0.5); /* Outer, softer glow */
+  }
 
-  // /* Optional: Trail effect (requires JavaScript update) */
-  // .trail {
-  //   position: fixed;
-  //   width: 15px; /* Slightly larger trail */
-  //   height: 15px;
-  //   background: rgba(255, 255, 255, 0.15); /* Softer white for trail */
-  //   border-radius: 50%;
-  //   pointer-events: none;
-  //   mix-blend-mode: exclusion;
-  //   transform: translate(-50%, -50%);
-  //   animation: fadeAndShrink 0.3s forwards ease-out; /* Smoother animation */
-  //   opacity: 0.8;
-  // }
+  /* Optional: Trail effect (requires JavaScript update) */
+  .trail {
+    position: fixed;
+    width: 15px; /* Slightly larger trail */
+    height: 15px;
+    background: rgba(255, 255, 255, 0.15); /* Softer white for trail */
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: exclusion;
+    transform: translate(-50%, -50%);
+    animation: fadeAndShrink 0.3s forwards ease-out; /* Smoother animation */
+    opacity: 0.8;
+  }
 
-  // @keyframes fadeAndShrink {
-  //   0% { opacity: 1; transform: scale(1) translate(-50%, -50%); }
-  //   100% { opacity: 0; transform: scale(0.6) translate(-50%, -50%); } /* Shrinks slightly */
-  // }
+  @keyframes fadeAndShrink {
+    0% { opacity: 1; transform: scale(1) translate(-50%, -50%); }
+    100% { opacity: 0; transform: scale(0.6) translate(-50%, -50%); } /* Shrinks slightly */
+  }
 
   /* Navigation */
   .nav {
@@ -744,18 +744,30 @@ const styles = `
     50% { opacity: 0.5; }
   }
 
-  /* Utility classes */
-  .fade-in {
+  /* --- MODIFIED/NEW --- Utility classes for animations */
+  .fade-in, .slide-in-left, .slide-in-right {
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease;
+    transition: opacity 0.6s ease-out, transform 0.8s ease-out;
   }
 
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
+  .fade-in {
+    transform: translateY(20px);
   }
-    /* Inline Text Highlight Animation */
+  
+  .slide-in-left {
+    transform: translateX(-50px);
+  }
+
+  .slide-in-right {
+    transform: translateX(50px);
+  }
+
+  .fade-in.visible, .slide-in-left.visible, .slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+  
+  /* Inline Text Highlight Animation */
   .highlight-text {
     color: #f093fb; /* A vibrant color for the highlight */
     font-weight: bold; /* Make it bold for emphasis */
@@ -778,7 +790,7 @@ export default function DynamicPortfolio() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
- // const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [scrollY, setScrollY] = useState(0)
   const typewriterTextRef = useRef(null)
 
@@ -794,26 +806,26 @@ export default function DynamicPortfolio() {
   }, [])
 
   // Mouse trail and position
-  // useEffect(() => {
-  //   const handleMouseMove = (e) => {
-  //     setMousePosition({ x: e.clientX, y: e.clientY });
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
       
-  //     // Optional: Create trail elements
-  //     const trailElement = document.createElement('div');
-  //     trailElement.className = 'trail';
-  //     trailElement.style.left = `${e.clientX}px`;
-  //     trailElement.style.top = `${e.clientY}px`;
-  //     document.body.appendChild(trailElement);
+      // Optional: Create trail elements
+      const trailElement = document.createElement('div');
+      trailElement.className = 'trail';
+      trailElement.style.left = `${e.clientX}px`;
+      trailElement.style.top = `${e.clientY}px`;
+      document.body.appendChild(trailElement);
       
-  //     setTimeout(() => {
-  //       if (document.body.contains(trailElement)) { // Check if element still exists before trying to remove
-  //         document.body.removeChild(trailElement);
-  //       }
-  //     }, 300); // Matches the new animation duration
-  //   };
-  //   window.addEventListener("mousemove", handleMouseMove);
-  //   return () => window.removeEventListener("mousemove", handleMouseMove);
-  // }, []);
+      setTimeout(() => {
+        if (document.body.contains(trailElement)) { // Check if element still exists before trying to remove
+          document.body.removeChild(trailElement);
+        }
+      }, 300); // Matches the new animation duration
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   // Generate stars for universe background
   useEffect(() => {
@@ -866,9 +878,9 @@ export default function DynamicPortfolio() {
         }
       }
 
-      // Fade-in effect for sections
-      const fadeElements = document.querySelectorAll('.section:not(#home) .section-title, .section:not(#home) .about-grid, .section:not(#home) .skills-grid, .section:not(#home) .projects-grid, .section:not(#home) .contact-content');
-      fadeElements.forEach(el => {
+      // --- MODIFIED --- Fade-in/slide-in effect for elements
+      const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+      animatedElements.forEach(el => {
         const elementTop = el.getBoundingClientRect().top;
         const viewportHeight = window.innerHeight;
         if (elementTop < viewportHeight * 0.8) {
@@ -964,7 +976,13 @@ export default function DynamicPortfolio() {
       </div>
 
       {/* Mouse Follower */}
-    
+      <div 
+        className="mouse-follower"
+        style={{
+          left: mousePosition.x,
+          top: mousePosition.y,
+        }}
+      />
 
       {/* Navigation */}
       <nav className={`nav ${isLoaded ? 'loaded' : ''}`}>
@@ -1061,9 +1079,10 @@ export default function DynamicPortfolio() {
           <h2>About Me</h2>
           <div className="section-divider"></div>
         </div>
-        <div className="about-grid fade-in">
-          <div className="about-info">
-            <div className="about-info">
+        {/* --- MODIFIED --- Removed fade-in from grid parent */}
+        <div className="about-grid">
+          {/* --- MODIFIED --- Added slide-in-left to text container */}
+          <div className="about-info slide-in-left">
             <p className="about-text">
               Hello! I'm <span className="highlight-text">JAY PATEL</span>, a dedicated and enthusiastic <span className="highlight-text">WEB DEVELOPER</span> with a passion for creating dynamic and intuitive user experiences.
               My journey into the world of web development began with a fascination for how digital products come to life, and it has since grown into a relentless pursuit of mastering the craft.
@@ -1077,7 +1096,6 @@ export default function DynamicPortfolio() {
               When I'm not coding, you can find me exploring new design 9trends, contributing to open-source projects, or diving into a good book.
               I'm always eager to collaborate on exciting projects and contribute to innovative solutions.
             </p>
-            {/* You can keep these general badges as they are, or remove if you prefer only inline highlights */}
             <div className="badges">
               <span className="badge"><Code size={16} /> Clean Code</span>
               <span className="badge"><Zap size={16} /> Fast Learner</span>
@@ -1085,13 +1103,12 @@ export default function DynamicPortfolio() {
               <span className="badge"><Star size={16} /> Problem Solver</span>
             </div>
           </div>
-          </div>
-        <div className="avatar-container">
+          {/* --- MODIFIED --- Added slide-in-right to avatar container */}
+          <div className="avatar-container slide-in-right">
             <div className="avatar-ring"></div>
             <div className="avatar-ring"></div>
             <div className="avatar-ring"></div>
             <div className="avatar">
-              {/* Replace 'your-image-url.jpg' with the actual path to your image */}
               <img src="https://avatar.iran.liara.run/public/boy" alt="Your Avatar" />
             </div>
           </div>
@@ -1124,7 +1141,6 @@ export default function DynamicPortfolio() {
           {projects.map((project, index) => (
             <div key={index} className="project-card">
               <div className="project-image">
-                {/* Placeholder for project image/icon */}
                 <Smartphone size={60} color="rgba(255,255,255,0.3)" /> 
               </div>
               <div className="project-content">
@@ -1164,7 +1180,7 @@ export default function DynamicPortfolio() {
             I'm always open to new opportunities, collaborations, and interesting conversations.
             Whether you have a project in mind, a question, or just want to say hello, feel free to reach out!
           </p>
-          <a href="mailto:jaypatelin2005@gmail.com" className="contact-button">
+          <a href="mailto:Jaypatelin2005@gmail.com" className="contact-button">
             Say Hello <Mail size={20} style={{ marginLeft: '8px' }} />
           </a>
         </div>
